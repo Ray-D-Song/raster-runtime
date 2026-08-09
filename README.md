@@ -317,6 +317,10 @@ Pushing a version tag that exactly matches the `raster_runtime` Cargo package pu
 git push origin v0.1.0
 ```
 
+If a release workflow needs to be retried after a failed tag push, run the
+`Release` workflow manually from the default branch with `tag=v0.1.0`. It
+checks out that existing tag and never moves or recreates it.
+
 Each release provides uncompressed native executables named
 `raster_runtime-{linux|macos|windows}-{x64|arm64}` (`.exe` on Windows), plus
 `SHA256SUMS`. Verify a downloaded file before running it:
