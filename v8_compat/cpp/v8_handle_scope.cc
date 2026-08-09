@@ -68,6 +68,9 @@ internal::Address* HandleScope::CreateHandle(internal::Isolate* i_isolate,
                                   slot->object.contents.root_id);
   raster_v8::register_handle_repr(ctx, static_cast<uintptr_t>(slot->object.tagged_map.value),
                                   slot->object.contents.root_id);
+  if (raster_v8::is_callback_frame_layout(src)) {
+    raster_v8::current_callback_frame().borrowed_layouts.push_back(&slot->object);
+  }
   // Indirect Local::ptr() reads the first word of the in-place object layout.
   return reinterpret_cast<internal::Address*>(&slot->object);
 }

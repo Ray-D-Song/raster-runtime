@@ -8,44 +8,27 @@
 
 namespace {
 
-bool is_callback_frame_layout(const raster_v8::shim::ObjectLayout* candidate) {
-  if (candidate == nullptr ||
-      (reinterpret_cast<uintptr_t>(candidate) % alignof(raster_v8::shim::ObjectLayout)) != 0) {
+bool is_registered_live_repr(uintptr_t address) {
+  auto* ctx = raster_v8::bridge_ctx();
+  if (ctx == nullptr) {
     return false;
   }
-  auto in_frame = [&](const raster_v8::CallbackHandleFrame& frame) {
-    for (const auto& layout : frame.layouts) {
-      if (&layout == candidate) {
-        return true;
-      }
-    }
-    for (const auto* borrowed : frame.borrowed_layouts) {
-      if (borrowed == candidate) {
-        return true;
-      }
-    }
-    return false;
-  };
-  for (auto it = raster_v8::g_callback_handle_stack.rbegin();
-       it != raster_v8::g_callback_handle_stack.rend(); ++it) {
-    if (in_frame(*it)) {
-      return true;
-    }
-  }
-  return in_frame(raster_v8::g_callback_handle_frame);
+  auto* impl = raster_v8::ctx_impl(ctx);
+  return impl->repr_to_root.find(address) != impl->repr_to_root.end();
 }
 
 raster_v8::shim::ObjectLayout* layout_for_globalize_address(uintptr_t address) {
   using raster_v8::shim::ObjectLayout;
   using raster_v8::shim::TaggedPointer;
 
-  // FunctionCallbackInfo receivers and arguments are strong-tagged pointers into
-  // the live dispatch frame and never pass through note_materialized_layout, so a
-  // verifiable address always beats the last-materialized fallback.
+  // Dispatch-frame layouts are not registered as reprs, and HandleScope handles
+  // are. Either way a verifiable address beats the last-materialized fallback,
+  // which is only the most recent handle, not the one being globalized.
   if (address != 0 &&
       (address & 0b11) == static_cast<uintptr_t>(TaggedPointer::Tag::StrongPointer)) {
     auto* candidate = TaggedPointer::fromRaw(address).getPtr<ObjectLayout>();
-    if (is_callback_frame_layout(candidate) && candidate->contents.root_id != 0) {
+    if (candidate != nullptr && candidate->contents.root_id != 0 &&
+        (raster_v8::is_callback_frame_layout(candidate) || is_registered_live_repr(address))) {
       return candidate;
     }
   }
@@ -95,7 +78,7 @@ uintptr_t* GlobalizeReference(internal::Isolate* i_isolate, uintptr_t address) {
   // ObjectWrap::Wrap(info.This()) globalizes a borrowed receiver root that the
   // trampoline still owns until the native constructor returns; only frame layouts
   // need a dup. Normal local_from_root handles adopt the caller's root.
-  if (is_callback_frame_layout(layout) && b->root_dup) {
+  if (raster_v8::is_callback_frame_layout(layout) && b->root_dup) {
     uint64_t owned = 0;
     if (b->root_dup(root_id, &owned) == RASTER_V8_OK && owned != 0) {
       root_id = owned;

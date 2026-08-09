@@ -1263,6 +1263,27 @@ fn runtime_teardown_does_not_leave_process_global_owners() {
 }
 
 #[test]
+fn persistent_binds_to_requested_local_not_last_materialized() {
+    let _lock = abi_test_lock();
+
+    let fixture = WiredTestContext::new();
+    extern "C" {
+        fn raster_v8_test_persistent_binds_to_requested_local(
+            ctx_state: *mut crate::bridge::RasterV8ContextState,
+        ) -> i32;
+    }
+    let ok = unsafe { raster_v8_test_persistent_binds_to_requested_local(fixture.context_state) };
+    assert_eq!(
+        ok, 1,
+        "Persistent::Reset must globalize the requested Local, not g_last_materialized_layout"
+    );
+    unsafe {
+        crate::shutdown_context(fixture.ctx_ptr).unwrap();
+    }
+    fixture.shutdown_bridge_and_drop_runtime();
+}
+
+#[test]
 fn persistent_reset_scrubs_layout_index_maps() {
     let _lock = abi_test_lock();
 

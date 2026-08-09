@@ -89,8 +89,13 @@ RasterV8Status dispatch_v8_accessor(uint32_t accessor_id,
     return RASTER_V8_ERROR;
   }
 
+  g_callback_handle_stack.emplace_back();
+  auto& callback_frame = current_callback_frame();
+
   shim::ObjectLayout* this_layout = layout_for_root(ctx, receiver_root);
   shim::ObjectLayout* holder_layout = layout_for_root(ctx, receiver_root);
+  callback_frame.borrowed_layouts.push_back(this_layout);
+  callback_frame.borrowed_layouts.push_back(holder_layout);
   shim::ObjectLayout data_layout(const_cast<shim::Map*>(&shim::Map::object_map()), acc_rec->data_root_id);
   auto& undefined_layout =
       iso_impl(reinterpret_cast<RasterV8IsolateState*>(isolate))->undefined_value.layout;
@@ -124,6 +129,10 @@ RasterV8Status dispatch_v8_accessor(uint32_t accessor_id,
   *out_result_root = root_id_from_accessor_return(ctx, repr);
   raster_v8_close_handle_scope(ctx);
   raster_v8_dispatch_pending_weak_callbacks();
+  g_callback_handle_stack.pop_back();
+  if (g_callback_handle_stack.empty()) {
+    g_callback_handle_frame = {};
+  }
   return RASTER_V8_OK;
 }
 

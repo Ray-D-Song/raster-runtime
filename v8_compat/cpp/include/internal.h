@@ -34,6 +34,32 @@ inline void note_materialized_layout(shim::ObjectLayout* layout) {
   g_last_materialized_layout = layout;
 }
 
+inline bool is_callback_frame_layout(const shim::ObjectLayout* candidate) {
+  if (candidate == nullptr ||
+      (reinterpret_cast<uintptr_t>(candidate) % alignof(shim::ObjectLayout)) != 0) {
+    return false;
+  }
+  auto in_frame = [&](const CallbackHandleFrame& frame) {
+    for (const auto& layout : frame.layouts) {
+      if (&layout == candidate) {
+        return true;
+      }
+    }
+    for (const auto* borrowed : frame.borrowed_layouts) {
+      if (borrowed == candidate) {
+        return true;
+      }
+    }
+    return false;
+  };
+  for (auto it = g_callback_handle_stack.rbegin(); it != g_callback_handle_stack.rend(); ++it) {
+    if (in_frame(*it)) {
+      return true;
+    }
+  }
+  return in_frame(g_callback_handle_frame);
+}
+
 struct HandleScopeData {
   uintptr_t* next;
   uintptr_t* limit;
