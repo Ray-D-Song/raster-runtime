@@ -108,6 +108,7 @@ RasterV8Status dispatch_v8_callback(uint32_t function_id,
   frame.layouts.clear();
   frame.values.clear();
   frame.roots.clear();
+  frame.borrowed_layouts.clear();
   frame.layouts.reserve(static_cast<size_t>(argc) + 1);
   frame.values.reserve(static_cast<size_t>(argc) + 2);
   frame.roots.reserve(static_cast<size_t>(argc) + 1);
@@ -122,6 +123,7 @@ RasterV8Status dispatch_v8_callback(uint32_t function_id,
   }
 
   auto* context_layout = layout_for_root(ctx, ctx_impl(ctx)->context_root_id);
+  frame.borrowed_layouts.push_back(context_layout);
   auto& undefined_layout =
       iso_impl(reinterpret_cast<RasterV8IsolateState*>(isolate))->undefined_value.layout;
 
@@ -140,6 +142,7 @@ RasterV8Status dispatch_v8_callback(uint32_t function_id,
       reinterpret_cast<v8::internal::Address>(&target_layout);
   if (new_target_root != 0) {
     auto* new_target_layout = layout_for_root(ctx, new_target_root);
+    frame.borrowed_layouts.push_back(new_target_layout);
     implicit_args[RASTER_V8_FUNCTION_CALLBACK_K_NEW_TARGET_INDEX] =
         reinterpret_cast<v8::internal::Address>(new_target_layout);
   } else {

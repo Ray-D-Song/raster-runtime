@@ -8,7 +8,30 @@
 
 namespace {
 
+bool is_registered_live_repr(uintptr_t address) {
+  auto* ctx = raster_v8::bridge_ctx();
+  if (ctx == nullptr) {
+    return false;
+  }
+  auto* impl = raster_v8::ctx_impl(ctx);
+  return impl->repr_to_root.find(address) != impl->repr_to_root.end();
+}
+
 raster_v8::shim::ObjectLayout* layout_for_globalize_address(uintptr_t address) {
+  using raster_v8::shim::ObjectLayout;
+  using raster_v8::shim::TaggedPointer;
+
+  // Dispatch-frame layouts are not registered as reprs, and HandleScope handles
+  // are. Either way a verifiable address beats the last-materialized fallback,
+  // which is only the most recent handle, not the one being globalized.
+  if (address != 0 &&
+      (address & 0b11) == static_cast<uintptr_t>(TaggedPointer::Tag::StrongPointer)) {
+    auto* candidate = TaggedPointer::fromRaw(address).getPtr<ObjectLayout>();
+    if (candidate != nullptr && candidate->contents.root_id != 0 &&
+        (raster_v8::is_callback_frame_layout(candidate) || is_registered_live_repr(address))) {
+      return candidate;
+    }
+  }
   if (raster_v8::g_last_materialized_layout != nullptr) {
     return raster_v8::g_last_materialized_layout;
   }
@@ -16,8 +39,8 @@ raster_v8::shim::ObjectLayout* layout_for_globalize_address(uintptr_t address) {
     return nullptr;
   }
   if ((address & 0b11) == 0) {
-    auto* direct = reinterpret_cast<raster_v8::shim::ObjectLayout*>(address);
-    if (direct->tagged_map.tag() == raster_v8::shim::TaggedPointer::Tag::StrongPointer) {
+    auto* direct = reinterpret_cast<ObjectLayout*>(address);
+    if (direct->tagged_map.tag() == TaggedPointer::Tag::StrongPointer) {
       return direct;
     }
   }
@@ -51,6 +74,15 @@ uintptr_t* GlobalizeReference(internal::Isolate* i_isolate, uintptr_t address) {
   uint64_t root_id = layout->contents.root_id;
   if (root_id == 0) {
     return nullptr;
+  }
+  // ObjectWrap::Wrap(info.This()) globalizes a borrowed receiver root that the
+  // trampoline still owns until the native constructor returns; only frame layouts
+  // need a dup. Normal local_from_root handles adopt the caller's root.
+  if (raster_v8::is_callback_frame_layout(layout) && b->root_dup) {
+    uint64_t owned = 0;
+    if (b->root_dup(root_id, &owned) == RASTER_V8_OK && owned != 0) {
+      root_id = owned;
+    }
   }
   auto* persistent = new raster_v8::shim::ObjectLayout(
       const_cast<raster_v8::shim::Map*>(&raster_v8::shim::Map::object_map()), root_id);

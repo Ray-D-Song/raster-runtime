@@ -803,6 +803,85 @@ fn teardown_activation_uses_the_owner_context_and_isolate() {
 }
 
 #[test]
+fn objectwrap_wrapped_from_callback_receiver_registers_weak_callback() {
+    let _lock = abi_test_lock();
+    let mut fixture = WiredTestContext::new();
+    extern "C" {
+        fn raster_v8_test_objectwrap_shutdown_counters_new() -> *mut std::ffi::c_void;
+        fn raster_v8_test_objectwrap_shutdown_counters_read(
+            counters: *const std::ffi::c_void,
+            constructed_out: *mut i32,
+            destroyed_out: *mut i32,
+        );
+        fn raster_v8_test_objectwrap_shutdown_counters_destroy(counters: *mut std::ffi::c_void);
+        fn raster_v8_test_register_objectwrap_ctor_template(counters: *mut std::ffi::c_void)
+            -> u32;
+    }
+    let counters = unsafe { raster_v8_test_objectwrap_shutdown_counters_new() };
+    let function_id = unsafe { raster_v8_test_register_objectwrap_ctor_template(counters) };
+    let func_root = fixture.get_function(function_id);
+
+    let mut instance_root = 0u64;
+    let status = unsafe {
+        crate::value_ops::function_new_instance(
+            fixture.context_state,
+            func_root,
+            0,
+            std::ptr::null(),
+            &mut instance_root,
+        )
+    };
+    assert!(matches!(status, crate::bridge::RasterV8Status::Ok));
+    assert_ne!(instance_root, 0);
+
+    let mut instance_ptr = std::ptr::null_mut();
+    let ptr_status = unsafe {
+        crate::js_ops::object_ptr_for_root(fixture.context_state, instance_root, &mut instance_ptr)
+    };
+    assert!(matches!(ptr_status, crate::bridge::RasterV8Status::Ok));
+    assert!(!instance_ptr.is_null());
+    assert!(
+        crate::context_tables::with_context_tables(fixture.ctx_ptr, |t| {
+            t.weak_callbacks.contains_key(&(instance_ptr as usize))
+        }),
+        "weak callback must be keyed to the instance, not a stale materialized layout"
+    );
+
+    assert_eq!(
+        crate::bridge::teardown_counts_for_ctx(fixture.ctx_ptr).weak_callbacks,
+        1,
+        "Wrap(info.This()) must register the ObjectWrap weak callback"
+    );
+
+    unsafe {
+        crate::run_pre_bridge_teardown_gc(fixture.ctx_ptr).unwrap();
+    }
+    let mut constructed = 0;
+    let mut destroyed = 0;
+    unsafe {
+        raster_v8_test_objectwrap_shutdown_counters_read(
+            counters,
+            &mut constructed,
+            &mut destroyed,
+        );
+    }
+    assert_eq!(constructed, 1);
+    assert_eq!(
+        destroyed, 1,
+        "receiver ObjectWrap must be destroyed at teardown"
+    );
+
+    unsafe {
+        crate::shutdown_context(fixture.ctx_ptr).unwrap();
+    }
+    assert!(crate::bridge::teardown_counts_for_ctx(fixture.ctx_ptr).is_zero());
+    fixture.shutdown_bridge_and_drop_runtime();
+    unsafe {
+        raster_v8_test_objectwrap_shutdown_counters_destroy(counters);
+    }
+}
+
+#[test]
 fn teardown_activation_rejects_registered_context_without_isolate() {
     let _lock = abi_test_lock();
     use rquickjs::{Context, Runtime};
@@ -1181,6 +1260,27 @@ fn runtime_teardown_does_not_leave_process_global_owners() {
     }
     assert!(crate::bridge::teardown_counts_for_ctx(fixture_b.ctx_ptr).is_zero());
     fixture_b.shutdown_bridge_and_drop_runtime();
+}
+
+#[test]
+fn persistent_binds_to_requested_local_not_last_materialized() {
+    let _lock = abi_test_lock();
+
+    let fixture = WiredTestContext::new();
+    extern "C" {
+        fn raster_v8_test_persistent_binds_to_requested_local(
+            ctx_state: *mut crate::bridge::RasterV8ContextState,
+        ) -> i32;
+    }
+    let ok = unsafe { raster_v8_test_persistent_binds_to_requested_local(fixture.context_state) };
+    assert_eq!(
+        ok, 1,
+        "Persistent::Reset must globalize the requested Local, not g_last_materialized_layout"
+    );
+    unsafe {
+        crate::shutdown_context(fixture.ctx_ptr).unwrap();
+    }
+    fixture.shutdown_bridge_and_drop_runtime();
 }
 
 #[test]

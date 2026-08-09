@@ -44,6 +44,24 @@ class ShutdownObjectWrap final : public node::ObjectWrap {
   ObjectWrapShutdownCounters* counters_;
 };
 
+ObjectWrapShutdownCounters* g_ctor_counters = nullptr;
+
+void objectwrap_ctor_callback(const v8::FunctionCallbackInfo<v8::Value>& info) {
+  if (g_ctor_counters == nullptr) {
+    return;
+  }
+  // Mirror better-sqlite3: a native ctor materializes locals before Wrap, so
+  // g_last_materialized_layout points at an unrelated object by then.
+  v8::Local<v8::Object> decoy = v8::Object::New(info.GetIsolate());
+  (void)decoy;
+  // Local<T>::New(info.This()) copies the frame layout into the arena; the copy
+  // must stay marked borrowed so globalizing it dups the receiver root.
+  v8::Local<v8::Object> copied = v8::Local<v8::Object>::New(info.GetIsolate(), info.This());
+  auto* wrap = new ShutdownObjectWrap(g_ctor_counters);
+  wrap->Attach(copied);
+  info.GetReturnValue().Set(info.This());
+}
+
 }  // namespace
 
 // Counters live outside the wrap so they survive delete.
@@ -114,6 +132,20 @@ extern "C" int raster_v8_test_setup_shutdown_object_wrap(
 extern "C" uint32_t raster_v8_test_register_function_template() {
   uint32_t template_id =
       raster_v8::FunctionRegistry::instance().register_template(noop_callback, 0);
+  return raster_v8::FunctionRegistry::instance().register_function(template_id);
+}
+
+extern "C" uint32_t raster_v8_test_register_objectwrap_ctor_template(
+    ObjectWrapShutdownCounters* counters) {
+  g_ctor_counters = counters;
+  uint32_t template_id =
+      raster_v8::FunctionRegistry::instance().register_template(objectwrap_ctor_callback, 0);
+  if (auto* fn = raster_v8::TemplateRegistry::instance().function_template_at(template_id)) {
+    if (auto* inst = raster_v8::TemplateRegistry::instance().object_template_at(
+            fn->instance_template_id)) {
+      inst->internal_field_count = 1;
+    }
+  }
   return raster_v8::FunctionRegistry::instance().register_function(template_id);
 }
 

@@ -173,6 +173,42 @@ extern "C" void raster_v8_test_objectwrap_fixture_destroy(FixtureCounters* count
   delete counters;
 }
 
+extern "C" int raster_v8_test_persistent_binds_to_requested_local(
+    RasterV8ContextState* ctx_state) {
+  const RasterV8BridgeV1* bridge = raster_v8_bridge();
+  auto* isolate = reinterpret_cast<v8::Isolate*>(raster_v8_current_isolate());
+  auto* isolate_impl = raster_v8::iso_impl(
+      reinterpret_cast<RasterV8IsolateState*>(raster_v8_current_isolate()));
+  if (!bridge || !ctx_state || !isolate || !isolate_impl) {
+    return 0;
+  }
+  uint64_t first_root = 0;
+  uint64_t second_root = 0;
+  if (bridge->object_new(ctx_state, &first_root) != RASTER_V8_OK || first_root == 0 ||
+      bridge->object_new(ctx_state, &second_root) != RASTER_V8_OK || second_root == 0) {
+    return 0;
+  }
+  v8::Local<v8::Object> first = raster_v8::local_from_root<v8::Object>(
+      isolate, first_root, &raster_v8::shim::Map::object_map());
+  // Materialize second last so g_last_materialized_layout points at the wrong object.
+  v8::Local<v8::Object> second = raster_v8::local_from_root<v8::Object>(
+      isolate, second_root, &raster_v8::shim::Map::object_map());
+  (void)second;
+
+  v8::Persistent<v8::Object> persistent;
+  persistent.Reset(isolate, first);
+
+  bool bound_to_first = false;
+  for (const auto& [cell, slot] : isolate_impl->persistents) {
+    (void)cell;
+    if (slot.root_id == first_root) {
+      bound_to_first = true;
+    }
+  }
+  persistent.Reset();
+  return bound_to_first ? 1 : 0;
+}
+
 extern "C" int raster_v8_test_objectwrap_strong_reset_scrubs_layout_maps(
     RasterV8ContextState* ctx_state) {
   const RasterV8BridgeV1* bridge = raster_v8_bridge();
