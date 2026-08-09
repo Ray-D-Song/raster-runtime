@@ -197,7 +197,7 @@ declare module "process" {
      *
      * ```console
      * {
-     *   raster_runtime: '0.8.1-beta',
+     *   raster_runtime: '0.1.0',
      *   node: '24.3.0'
      * }
      * ```

@@ -1,7 +1,7 @@
 [package]
 name = "raster_runtime_http"
 description = "raster_runtime Module http & https"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/ray-d-song/raster_runtime"
@@ -64,13 +64,13 @@ hyper-openssl = { version = "0.10", features = [
   "client-legacy",
 ], optional = true }
 openssl = { version = "0.10", optional = true }
-raster_runtime_dns_cache = { version = "0.8.1-beta", path = "../../libs/raster_runtime_dns_cache" }
-raster_runtime_tls = { version = "0.8.1-beta", default-features = false, path = "../raster_runtime_tls" }
-raster_runtime_utils = { version = "0.8.1-beta", path = "../../libs/raster_runtime_utils", default-features = false }
-raster_runtime_context = { version = "0.8.1-beta", path = "../../libs/raster_runtime_context" }
-raster_runtime_events = { version = "0.8.1-beta", path = "../raster_runtime_events" }
-raster_runtime_buffer = { version = "0.8.1-beta", path = "../raster_runtime_buffer" }
-raster_runtime_net = { version = "0.8.1-beta", path = "../raster_runtime_net" }
+raster_runtime_dns_cache = { version = "0.1.0", path = "../../libs/raster_runtime_dns_cache" }
+raster_runtime_tls = { version = "0.1.0", default-features = false, path = "../raster_runtime_tls" }
+raster_runtime_utils = { version = "0.1.0", path = "../../libs/raster_runtime_utils", default-features = false }
+raster_runtime_context = { version = "0.1.0", path = "../../libs/raster_runtime_context" }
+raster_runtime_events = { version = "0.1.0", path = "../raster_runtime_events" }
+raster_runtime_buffer = { version = "0.1.0", path = "../raster_runtime_buffer" }
+raster_runtime_net = { version = "0.1.0", path = "../raster_runtime_net" }
 once_cell = { version = "1", features = ["std"], default-features = false }
 rquickjs = { version = "=0.12.1", features = [
   "either",

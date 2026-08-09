@@ -1,6 +1,6 @@
 [package]
 name = "raster_runtime"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license-file = "LICENSE"
 build = "build.rs"
@@ -61,7 +61,7 @@ snmalloc-rs = { version = "0.7", features = [
 libc = "0.2"
 
 [dev-dependencies]
-raster_runtime_test = { version = "0.8.1-beta", path = "../libs/raster_runtime_test" }
+raster_runtime_test = { version = "0.1.0", path = "../libs/raster_runtime_test" }
 
 [build-dependencies]
 cc = "1"

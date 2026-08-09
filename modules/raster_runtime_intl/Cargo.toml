@@ -1,7 +1,7 @@
 [package]
 name = "raster_runtime_intl"
 description = "raster_runtime Intl module - minimal internationalization support"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/ray-d-song/raster_runtime"
@@ -15,4 +15,4 @@ path = "src/lib.rs"
 itoa = "1.0"
 jiff = { version = "0.2" }
 rquickjs = { version = "=0.12.1", default-features = false }
-raster_runtime_utils = { version = "0.8.1-beta", path = "../../libs/raster_runtime_utils" }
+raster_runtime_utils = { version = "0.1.0", path = "../../libs/raster_runtime_utils" }

@@ -2383,7 +2383,7 @@ checksum = "0c8d0fd677905edcbeedbf2edb6494d676f0e98d54d5cf9bda0b061cb8fb8aba"
 
 [[package]]
 name = "raster_runtime"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "cc",
  "constcat",
@@ -2403,7 +2403,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_abort"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_async_hooks",
  "raster_runtime_events",
@@ -2417,7 +2417,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_assert"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_test",
  "raster_runtime_utils",
@@ -2426,7 +2426,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_async_hooks"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_hooking",
  "raster_runtime_utils",
@@ -2436,7 +2436,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_buffer"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "itoa",
  "raster_runtime_encoding",
@@ -2449,14 +2449,14 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_build"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "rustc_version",
 ]
 
 [[package]]
 name = "raster_runtime_child_process"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "itoa",
  "libc",
@@ -2472,7 +2472,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_compression"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "brotli",
  "brotlic",
@@ -2482,7 +2482,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_console"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_logging",
  "raster_runtime_utils",
@@ -2491,7 +2491,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_constants"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_fs",
  "raster_runtime_test",
@@ -2502,7 +2502,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_context"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_build",
  "raster_runtime_test",
@@ -2514,7 +2514,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_core"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "bytes",
  "home",
@@ -2557,7 +2557,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_crypto"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "aes",
  "aes-gcm",
@@ -2600,7 +2600,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_dgram"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "itoa",
  "raster_runtime_buffer",
@@ -2615,7 +2615,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_diagnostics_channel"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_utils",
  "rquickjs",
@@ -2623,7 +2623,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_dns"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "either",
  "raster_runtime_context",
@@ -2636,7 +2636,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_dns_cache"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "hyper-util",
  "quick_cache",
@@ -2648,7 +2648,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_encoding"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "base64-simd",
  "hex-simd",
@@ -2659,7 +2659,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_events"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_utils",
  "rquickjs",
@@ -2668,7 +2668,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_exceptions"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_utils",
  "rquickjs",
@@ -2676,7 +2676,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_fetch"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "bytes",
  "either",
@@ -2708,7 +2708,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_fs"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "either",
  "junction",
@@ -2730,7 +2730,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_hooking"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "once_cell",
  "raster_runtime_utils",
@@ -2739,7 +2739,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_http"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "bytes",
  "http-body-util",
@@ -2765,7 +2765,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_inspector"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_test",
  "raster_runtime_utils",
@@ -2775,7 +2775,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_intl"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "itoa",
  "jiff",
@@ -2785,7 +2785,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_json"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "criterion",
  "itoa",
@@ -2800,7 +2800,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_logging"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "itoa",
  "raster_runtime_context",
@@ -2814,7 +2814,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_modules"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "home",
  "once_cell",
@@ -2871,7 +2871,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_napi"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "libc",
  "libloading",
@@ -2888,14 +2888,14 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_navigator"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "rquickjs",
 ]
 
 [[package]]
 name = "raster_runtime_net"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "itoa",
  "rand",
@@ -2913,7 +2913,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_numbers"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "criterion",
  "itoa",
@@ -2926,7 +2926,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_os"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "home",
  "libc",
@@ -2946,7 +2946,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_path"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "criterion",
  "memchr",
@@ -2958,7 +2958,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_perf_hooks"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_events",
  "raster_runtime_test",
@@ -2968,7 +2968,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_process"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "libc",
  "once_cell",
@@ -2984,7 +2984,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_querystring"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_utils",
  "rquickjs",
@@ -2992,7 +2992,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_sqlite"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "cc",
  "libc",
@@ -3009,7 +3009,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_stream"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_buffer",
  "raster_runtime_context",
@@ -3021,7 +3021,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_stream_web"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_abort",
  "raster_runtime_test",
@@ -3033,7 +3033,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_string_decoder"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_buffer",
  "raster_runtime_encoding",
@@ -3045,7 +3045,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_temporal"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "jiff",
  "raster_runtime_utils",
@@ -3054,7 +3054,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_test"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "rquickjs",
  "tokio",
@@ -3063,7 +3063,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_test_tls"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "http",
  "http-body-util",
@@ -3079,7 +3079,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_timers"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "once_cell",
  "raster_runtime_context",
@@ -3092,7 +3092,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_tls"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "base64",
  "idna",
@@ -3123,7 +3123,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_tty"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "crossterm",
  "libc",
@@ -3139,7 +3139,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_url"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_test",
  "raster_runtime_utils",
@@ -3150,7 +3150,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_util"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_context",
  "raster_runtime_encoding",
@@ -3164,7 +3164,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_utils"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "libc",
  "raster_runtime_build",
@@ -3177,7 +3177,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_v8"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_test",
  "raster_runtime_utils",
@@ -3187,7 +3187,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_vm"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_test",
  "raster_runtime_utils",
@@ -3197,7 +3197,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_webassembly"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "once_cell",
  "raster_runtime_test",
@@ -3211,7 +3211,7 @@ dependencies = [
 
 [[package]]
 name = "raster_runtime_zlib"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "raster_runtime_buffer",
  "raster_runtime_compression",
@@ -4183,7 +4183,7 @@ dependencies = [
 
 [[package]]
 name = "v8_compat"
-version = "0.8.1-beta"
+version = "0.1.0"
 dependencies = [
  "cc",
  "libc",

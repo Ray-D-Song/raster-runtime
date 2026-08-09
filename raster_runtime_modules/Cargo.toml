@@ -1,7 +1,7 @@
 [package]
 name = "raster_runtime_modules"
 description = "raster_runtime Modules for rquickjs"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/ray-d-song/raster_runtime"
@@ -140,7 +140,7 @@ v8-compat = ["napi", "dep:v8_compat", "raster_runtime_napi/v8-compat"]
 home = { version = "0.5", default-features = false }
 raster_runtime_hooking = { path = "../libs/raster_runtime_hooking" }
 raster_runtime_json = { path = "../libs/raster_runtime_json" }
-raster_runtime_utils = { version = "0.8.1-beta", path = "../libs/raster_runtime_utils" }
+raster_runtime_utils = { version = "0.1.0", path = "../libs/raster_runtime_utils" }
 once_cell = { version = "1", features = ["std"], default-features = false }
 rquickjs = { version = "=0.12.1", features = ["loader", "std"], default-features = false }
 simd-json = { version = "0.17", default-features = false }
@@ -148,47 +148,47 @@ tokio = { version = "1", default-features = false }
 tracing = { version = "0.1", default-features = false }
 
 # Optional
-raster_runtime_abort = { version = "0.8.1-beta", path = "../modules/raster_runtime_abort", optional = true }
-raster_runtime_assert = { version = "0.8.1-beta", path = "../modules/raster_runtime_assert", optional = true }
-raster_runtime_async_hooks = { version = "0.8.1-beta", path = "../modules/raster_runtime_async_hooks", optional = true }
-raster_runtime_buffer = { version = "0.8.1-beta", path = "../modules/raster_runtime_buffer", optional = true }
-raster_runtime_child_process = { version = "0.8.1-beta", path = "../modules/raster_runtime_child_process", optional = true }
-raster_runtime_console = { version = "0.8.1-beta", path = "../modules/raster_runtime_console", optional = true }
-raster_runtime_constants = { version = "0.8.1-beta", path = "../modules/raster_runtime_constants", optional = true }
-raster_runtime_crypto = { version = "0.8.1-beta", path = "../modules/raster_runtime_crypto", default-features = false, optional = true }
-raster_runtime_dgram = { version = "0.8.1-beta", path = "../modules/raster_runtime_dgram", optional = true }
-raster_runtime_diagnostics_channel = { version = "0.8.1-beta", path = "../modules/raster_runtime_diagnostics_channel", optional = true }
-raster_runtime_querystring = { version = "0.8.1-beta", path = "../modules/raster_runtime_querystring", optional = true }
-raster_runtime_dns = { version = "0.8.1-beta", path = "../modules/raster_runtime_dns", optional = true }
-raster_runtime_events = { version = "0.8.1-beta", path = "../modules/raster_runtime_events", optional = true }
-raster_runtime_exceptions = { version = "0.8.1-beta", path = "../modules/raster_runtime_exceptions", optional = true }
-raster_runtime_fetch = { version = "0.8.1-beta", path = "../modules/raster_runtime_fetch", default-features = false, optional = true }
-raster_runtime_fs = { version = "0.8.1-beta", path = "../modules/raster_runtime_fs", optional = true }
-raster_runtime_http = { version = "0.8.1-beta", path = "../modules/raster_runtime_http", default-features = false, optional = true }
-raster_runtime_inspector = { version = "0.8.1-beta", path = "../modules/raster_runtime_inspector", optional = true }
-raster_runtime_intl = { version = "0.8.1-beta", path = "../modules/raster_runtime_intl", optional = true }
-raster_runtime_navigator = { version = "0.8.1-beta", path = "../modules/raster_runtime_navigator", optional = true }
-raster_runtime_net = { version = "0.8.1-beta", path = "../modules/raster_runtime_net", optional = true }
-raster_runtime_os = { version = "0.8.1-beta", path = "../modules/raster_runtime_os", optional = true }
-raster_runtime_path = { version = "0.8.1-beta", path = "../modules/raster_runtime_path", optional = true }
-raster_runtime_process = { version = "0.8.1-beta", path = "../modules/raster_runtime_process", optional = true }
-raster_runtime_perf_hooks = { version = "0.8.1-beta", path = "../modules/raster_runtime_perf_hooks", optional = true }
-raster_runtime_stream_web = { version = "0.8.1-beta", path = "../modules/raster_runtime_stream_web", optional = true }
-raster_runtime_string_decoder = { version = "0.8.1-beta", path = "../modules/raster_runtime_string_decoder", optional = true }
-raster_runtime_temporal = { version = "0.8.1-beta", path = "../modules/raster_runtime_temporal", optional = true }
-raster_runtime_timers = { version = "0.8.1-beta", path = "../modules/raster_runtime_timers", optional = true }
-raster_runtime_tls = { version = "0.8.1-beta", path = "../modules/raster_runtime_tls", default-features = false, optional = true }
-raster_runtime_tty = { version = "0.8.1-beta", path = "../modules/raster_runtime_tty", optional = true }
-raster_runtime_url = { version = "0.8.1-beta", path = "../modules/raster_runtime_url", optional = true }
+raster_runtime_abort = { version = "0.1.0", path = "../modules/raster_runtime_abort", optional = true }
+raster_runtime_assert = { version = "0.1.0", path = "../modules/raster_runtime_assert", optional = true }
+raster_runtime_async_hooks = { version = "0.1.0", path = "../modules/raster_runtime_async_hooks", optional = true }
+raster_runtime_buffer = { version = "0.1.0", path = "../modules/raster_runtime_buffer", optional = true }
+raster_runtime_child_process = { version = "0.1.0", path = "../modules/raster_runtime_child_process", optional = true }
+raster_runtime_console = { version = "0.1.0", path = "../modules/raster_runtime_console", optional = true }
+raster_runtime_constants = { version = "0.1.0", path = "../modules/raster_runtime_constants", optional = true }
+raster_runtime_crypto = { version = "0.1.0", path = "../modules/raster_runtime_crypto", default-features = false, optional = true }
+raster_runtime_dgram = { version = "0.1.0", path = "../modules/raster_runtime_dgram", optional = true }
+raster_runtime_diagnostics_channel = { version = "0.1.0", path = "../modules/raster_runtime_diagnostics_channel", optional = true }
+raster_runtime_querystring = { version = "0.1.0", path = "../modules/raster_runtime_querystring", optional = true }
+raster_runtime_dns = { version = "0.1.0", path = "../modules/raster_runtime_dns", optional = true }
+raster_runtime_events = { version = "0.1.0", path = "../modules/raster_runtime_events", optional = true }
+raster_runtime_exceptions = { version = "0.1.0", path = "../modules/raster_runtime_exceptions", optional = true }
+raster_runtime_fetch = { version = "0.1.0", path = "../modules/raster_runtime_fetch", default-features = false, optional = true }
+raster_runtime_fs = { version = "0.1.0", path = "../modules/raster_runtime_fs", optional = true }
+raster_runtime_http = { version = "0.1.0", path = "../modules/raster_runtime_http", default-features = false, optional = true }
+raster_runtime_inspector = { version = "0.1.0", path = "../modules/raster_runtime_inspector", optional = true }
+raster_runtime_intl = { version = "0.1.0", path = "../modules/raster_runtime_intl", optional = true }
+raster_runtime_navigator = { version = "0.1.0", path = "../modules/raster_runtime_navigator", optional = true }
+raster_runtime_net = { version = "0.1.0", path = "../modules/raster_runtime_net", optional = true }
+raster_runtime_os = { version = "0.1.0", path = "../modules/raster_runtime_os", optional = true }
+raster_runtime_path = { version = "0.1.0", path = "../modules/raster_runtime_path", optional = true }
+raster_runtime_process = { version = "0.1.0", path = "../modules/raster_runtime_process", optional = true }
+raster_runtime_perf_hooks = { version = "0.1.0", path = "../modules/raster_runtime_perf_hooks", optional = true }
+raster_runtime_stream_web = { version = "0.1.0", path = "../modules/raster_runtime_stream_web", optional = true }
+raster_runtime_string_decoder = { version = "0.1.0", path = "../modules/raster_runtime_string_decoder", optional = true }
+raster_runtime_temporal = { version = "0.1.0", path = "../modules/raster_runtime_temporal", optional = true }
+raster_runtime_timers = { version = "0.1.0", path = "../modules/raster_runtime_timers", optional = true }
+raster_runtime_tls = { version = "0.1.0", path = "../modules/raster_runtime_tls", default-features = false, optional = true }
+raster_runtime_tty = { version = "0.1.0", path = "../modules/raster_runtime_tty", optional = true }
+raster_runtime_url = { version = "0.1.0", path = "../modules/raster_runtime_url", optional = true }
 openssl = { version = "0.10", optional = true }
-raster_runtime_util = { version = "0.8.1-beta", path = "../modules/raster_runtime_util", optional = true }
-raster_runtime_v8 = { version = "0.8.1-beta", path = "../modules/raster_runtime_v8", optional = true }
-raster_runtime_vm = { version = "0.8.1-beta", path = "../modules/raster_runtime_vm", optional = true }
-raster_runtime_webassembly = { version = "0.8.1-beta", path = "../modules/raster_runtime_webassembly", optional = true }
-raster_runtime_zlib = { version = "0.8.1-beta", path = "../modules/raster_runtime_zlib", optional = true }
-raster_runtime_sqlite = { version = "0.8.1-beta", path = "../modules/raster_runtime_sqlite", optional = true }
-raster_runtime_napi = { version = "0.8.1-beta", path = "../modules/raster_runtime_napi", optional = true }
-v8_compat = { version = "0.8.1-beta", path = "../v8_compat", optional = true }
+raster_runtime_util = { version = "0.1.0", path = "../modules/raster_runtime_util", optional = true }
+raster_runtime_v8 = { version = "0.1.0", path = "../modules/raster_runtime_v8", optional = true }
+raster_runtime_vm = { version = "0.1.0", path = "../modules/raster_runtime_vm", optional = true }
+raster_runtime_webassembly = { version = "0.1.0", path = "../modules/raster_runtime_webassembly", optional = true }
+raster_runtime_zlib = { version = "0.1.0", path = "../modules/raster_runtime_zlib", optional = true }
+raster_runtime_sqlite = { version = "0.1.0", path = "../modules/raster_runtime_sqlite", optional = true }
+raster_runtime_napi = { version = "0.1.0", path = "../modules/raster_runtime_napi", optional = true }
+v8_compat = { version = "0.1.0", path = "../v8_compat", optional = true }
 
 [dev-dependencies]
 raster_runtime_test = { path = "../libs/raster_runtime_test" }

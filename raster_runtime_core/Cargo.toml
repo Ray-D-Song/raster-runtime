@@ -1,6 +1,6 @@
 [package]
 name = "raster_runtime_core"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license-file = "LICENSE"
 

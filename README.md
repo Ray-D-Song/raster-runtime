@@ -309,6 +309,33 @@ make release
 
 You should now have a release binary for your target platform.
 
+## Release binaries
+
+Pushing a version tag that exactly matches the `raster_runtime` Cargo package publishes a GitHub Release. For example:
+
+```shell
+git push origin v0.1.0
+```
+
+Each release provides uncompressed native executables named
+`raster_runtime-{linux|macos|windows}-{x64|arm64}` (`.exe` on Windows), plus
+`SHA256SUMS`. Verify a downloaded file before running it:
+
+```shell
+# Linux
+sha256sum -c SHA256SUMS
+
+# macOS
+shasum -a 256 -c SHA256SUMS
+```
+
+On Linux and macOS, make a downloaded executable runnable first:
+
+```shell
+chmod +x raster_runtime-linux-x64
+./raster_runtime-linux-x64 --version
+```
+
 ## Crypto and TLS Backend Options
 
 raster_runtime supports multiple cryptographic backends for both the crypto module and TLS connections. These can be configured via Cargo features.

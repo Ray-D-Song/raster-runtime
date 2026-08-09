@@ -1,7 +1,7 @@
 [package]
 name = "raster_runtime_context"
 description = "raster_runtime context helpers"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/ray-d-song/raster_runtime"
@@ -10,12 +10,12 @@ repository = "https://github.com/ray-d-song/raster_runtime"
 rquickjs = { version = "=0.12.1", features = [
     "futures",
 ], default-features = false }
-raster_runtime_utils = { version = "0.8.1-beta", path = "../raster_runtime_utils", default-features = false }
+raster_runtime_utils = { version = "0.1.0", path = "../raster_runtime_utils", default-features = false }
 tokio = { version = "1", features = ["sync"], default-features = false }
 tracing = { version = "0.1", default-features = false }
 
 [dev-dependencies]
-raster_runtime_test = { version = "0.8.1-beta", path = "../raster_runtime_test" }
+raster_runtime_test = { version = "0.1.0", path = "../raster_runtime_test" }
 
 [build-dependencies]
-raster_runtime_build = { version = "0.8.1-beta", path = "../raster_runtime_build" }
+raster_runtime_build = { version = "0.1.0", path = "../raster_runtime_build" }

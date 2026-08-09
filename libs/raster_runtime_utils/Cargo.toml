@@ -1,7 +1,7 @@
 [package]
 name = "raster_runtime_utils"
 description = "raster_runtime utilities"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/ray-d-song/raster_runtime"
@@ -28,8 +28,8 @@ windows-sys = { version = "0.61", features = [
 ], default-features = false }
 
 [dev-dependencies]
-raster_runtime_test = { version = "0.8.1-beta", path = "../raster_runtime_test" }
+raster_runtime_test = { version = "0.1.0", path = "../raster_runtime_test" }
 tokio = { version = "1", features = ["full"] }
 
 [build-dependencies]
-raster_runtime_build = { version = "0.8.1-beta", path = "../raster_runtime_build" }
+raster_runtime_build = { version = "0.1.0", path = "../raster_runtime_build" }

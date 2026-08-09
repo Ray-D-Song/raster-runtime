@@ -1,7 +1,7 @@
 [package]
 name = "raster_runtime_test_tls"
 description = "raster_runtime test helpers for TLS"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/ray-d-song/raster_runtime"

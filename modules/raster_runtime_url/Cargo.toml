@@ -1,7 +1,7 @@
 [package]
 name = "raster_runtime_url"
 description = "raster_runtime Module url"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/ray-d-song/raster_runtime"
@@ -12,7 +12,7 @@ name = "raster_runtime_url"
 path = "src/lib.rs"
 
 [dependencies]
-raster_runtime_utils = { version = "0.8.1-beta", path = "../../libs/raster_runtime_utils", default-features = false }
+raster_runtime_utils = { version = "0.1.0", path = "../../libs/raster_runtime_utils", default-features = false }
 rquickjs = { version = "=0.12.1", default-features = false }
 url = { version = "2", features = ["std"], default-features = false }
 

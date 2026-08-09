@@ -1,7 +1,7 @@
 [package]
 name = "raster_runtime_crypto"
 description = "raster_runtime Module crypto"
-version = "0.8.1-beta"
+version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 repository = "https://github.com/ray-d-song/raster_runtime"
@@ -49,10 +49,10 @@ crypto-openssl = ["openssl-sys", "openssl", "_subtle-full"]
 [dependencies]
 crc32c = { version = "0.6", default-features = false }
 crc32fast = { version = "1", default-features = false }
-raster_runtime_buffer = { version = "0.8.1-beta", path = "../raster_runtime_buffer" }
-raster_runtime_context = { version = "0.8.1-beta", path = "../../libs/raster_runtime_context" }
-raster_runtime_encoding = { version = "0.8.1-beta", path = "../../libs/raster_runtime_encoding" }
-raster_runtime_utils = { version = "0.8.1-beta", path = "../../libs/raster_runtime_utils", default-features = false }
+raster_runtime_buffer = { version = "0.1.0", path = "../raster_runtime_buffer" }
+raster_runtime_context = { version = "0.1.0", path = "../../libs/raster_runtime_context" }
+raster_runtime_encoding = { version = "0.1.0", path = "../../libs/raster_runtime_encoding" }
+raster_runtime_utils = { version = "0.1.0", path = "../../libs/raster_runtime_utils", default-features = false }
 md-5 = { version = "0.11.0", default-features = false }
 once_cell = { version = "1", features = ["std"], default-features = false }
 rand = { version = "0.10.1", features = [
@@ -64,7 +64,7 @@ rquickjs = { version = "=0.12.1", default-features = false }
 
 
 # optional
-raster_runtime_json = { version = "0.8.1-beta", path = "../../libs/raster_runtime_json", optional = true }
+raster_runtime_json = { version = "0.1.0", path = "../../libs/raster_runtime_json", optional = true }
 aes = { version = "0.9.0", optional = true }
 aes-gcm = { version = "0.11.0-rc.3", features = [
   "alloc",

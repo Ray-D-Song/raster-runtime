@@ -2,8 +2,8 @@ TARGET_linux_x86_64 = x86_64-unknown-linux-musl
 TARGET_linux_arm64 = aarch64-unknown-linux-musl
 TARGET_darwin_x86_64 = x86_64-apple-darwin
 TARGET_darwin_arm64 = aarch64-apple-darwin
-TARGET_windows_x86_64 = x86_64-pc-windows-gnu
-TARGET_windows_arm64 = aarch64-is-not-yet-supported
+TARGET_windows_x86_64 = x86_64-pc-windows-msvc
+TARGET_windows_arm64 = aarch64-pc-windows-msvc
 RUST_VERSION = stable
 TOOLCHAIN = +$(RUST_VERSION)
 BUILD_ARG = $(TOOLCHAIN) build -r
@@ -79,7 +79,6 @@ raster_runtime-darwin-${1}.zip: | clean-js js
 	@rm -rf $$@
 	zip -j $$@ target/$$(TARGET_darwin_$$(RELEASE_ARCH_NAME_${1}))/release/raster_runtime
 
-# raster_runtime-windows-arm64* is automatically generated, but not currently supported.
 raster_runtime-windows-${1}.zip: | clean-js js
 	cargo $$(BUILD_ARG) --target $$(TARGET_windows_$$(RELEASE_ARCH_NAME_${1}))
 	zip -j $$@ target/$$(TARGET_windows_$$(RELEASE_ARCH_NAME_${1}))/release/raster_runtime.exe
