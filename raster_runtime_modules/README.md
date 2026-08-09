@@ -116,40 +116,53 @@ async fn main() -> Result<(), Error> {
 > [!NOTE]
 > Only a fraction of the Node.js APIs are supported. Below is a high level overview of partially supported APIs and modules.
 
-|                | Node.js | raster_runtime Modules | Feature          | Crate                 |
-| -------------- | ------- | ------------ | ---------------- | --------------------- |
-| abort          | ✔︎       | ✔︎️            | `abort`          | `raster_runtime_abort`          |
-| assert         | ✔︎       | ⚠️           | `assert`         | `raster_runtime_assert`         |
-| async_hooks    | ✔︎       | ⚠️           | `async-hooks`    | `raster_runtime_async_hooks`    |
-| inspector      | ✔︎       | ⚠️           | `inspector`      | `raster_runtime_inspector`      |
-| buffer         | ✔︎       | ⚠️           | `buffer`         | `raster_runtime_buffer`         |
-| child process  | ✔︎       | ⚠️           | `child-process`  | `raster_runtime_child_process`  |
-| console        | ✔︎       | ⚠️           | `console`        | `raster_runtime_console`        |
-| crypto         | ✔︎       | ⚠️           | `crypto`         | `raster_runtime_crypto`         |
-| dgram          | ✔︎       | ⚠️           | `dgram`          | `raster_runtime_dgram`          |
-| dns            | ✔︎       | ⚠️           | `dns`            | `raster_runtime_dns`            |
-| events         | ✔︎       | ⚠️           | `events`         | `raster_runtime_events`         |
-| exceptions     | ✔︎       | ⚠️           | `exceptions`     | `raster_runtime_exceptions`     |
-| fetch          | ✔︎       | ⚠️           | `fetch`          | `raster_runtime_fetch`          |
-| fs/promises    | ✔︎       | ⚠️           | `fs`             | `raster_runtime_fs`             |
-| fs             | ✔︎       | ⚠️           | `fs`             | `raster_runtime_fs`             |
-| intl           | ✔︎       | ⚠️           | N/A              | `raster_runtime_intl`           |
-| navigator      | ✔︎       | ⚠️           | `navigator`      | `raster_runtime_navigator`      |
-| net            | ✔︎       | ⚠️           | `net`            | `raster_runtime_net`            |
-| os             | ✔︎       | ⚠️           | `os`             | `raster_runtime_os`             |
-| path           | ✔︎       | ⚠️           | `path`           | `raster_runtime_path`           |
-| perf hooks     | ✔︎       | ⚠️           | `perf-hooks`     | `raster_runtime_perf_hooks`     |
-| stream (lib)   | N/A     | ✔︎            | N/A              | `raster_runtime_stream`         |
-| string_decoder | ✔︎       | ✔︎            | `string_decoder` | `raster_runtime_string_decoder` |
-| timers         | ✔︎       | ⚠️           | `timers`         | `raster_runtime_timers`         |
-| timers/promises| ✔︎       | ⚠️           | `timers`         | `raster_runtime_timers`         |
-| process        | ✔︎       | ⚠️           | `process`        | `raster_runtime_process`        |
-| temporal       | ✔︎       | ⚠️           | N/A              | `raster_runtime_temporal`       |
-| tty            | ✔︎       | ⚠️           | `tty`            | `raster_runtime_tty`            |
-| url            | ✔︎       | ⚠️           | `url`            | `raster_runtime_url`            |
-| util           | ✔︎       | ⚠️           | `util`           | `raster_runtime_util`           |
-| zlib           | ✔︎       | ⚠️           | `zlib`           | `raster_runtime_zlib`           |
-| Other modules  | ✔︎       | ✘            | N/A              | N/A                   |
+| Module / API | Node.js | raster_runtime Modules | Feature | Crate / implementation |
+| ------------ | ------- | ---------------------- | ------- | ---------------------- |
+| abort | ✔︎ | ✔︎ | `abort` | `raster_runtime_abort` |
+| assert / assert/strict | ✔︎ | ⚠️ | `assert` | `raster_runtime_assert` |
+| async_hooks | ✔︎ | ⚠️ | `async-hooks` | `raster_runtime_async_hooks` |
+| buffer | ✔︎ | ⚠️ | `buffer` | `raster_runtime_buffer` |
+| child_process | ✔︎ | ⚠️ | `child-process` | `raster_runtime_child_process` |
+| console | ✔︎ | ⚠️ | `console` | `raster_runtime_console` |
+| constants | ✔︎ | ⚠️ | `constants` | `raster_runtime_constants` |
+| crypto | ✔︎ | ⚠️ | `crypto` | `raster_runtime_crypto` |
+| dgram | ✔︎ | ⚠️ | `dgram` | `raster_runtime_dgram` |
+| diagnostics_channel | ✔︎ | ⚠️ | `diagnostics-channel` | `raster_runtime_diagnostics_channel` |
+| dns / dns/promises | ✔︎ | ⚠️ | `dns` | `raster_runtime_dns` |
+| events | ✔︎ | ⚠️ | `events` | `raster_runtime_events` |
+| exceptions | ✔︎ | ⚠️ | `exceptions` | `raster_runtime_exceptions` |
+| fetch | ✔︎ | ⚠️ | `fetch` | `raster_runtime_fetch` |
+| fs / fs/promises | ✔︎ | ⚠️ | `fs` | `raster_runtime_fs` |
+| http | ✔︎ | ⚠️ | `http` | `raster_runtime_http` |
+| http2 | ✔︎ | ⚠️ | N/A | embedded JS load-time surface; networking methods throw |
+| https | ✔︎ | ⚠️ | `https` | `raster_runtime_http` |
+| inspector | ✔︎ | ⚠️ | `inspector` | `raster_runtime_inspector` |
+| intl | ✔︎ | ⚠️ | `intl` | `raster_runtime_intl` |
+| module | ✔︎ | ⚠️ | N/A | built-in CommonJS loader facade |
+| navigator | ✔︎ | ⚠️ | `navigator` | `raster_runtime_navigator` |
+| net | ✔︎ | ⚠️ | `net` | `raster_runtime_net` |
+| os | ✔︎ | ⚠️ | `os` | `raster_runtime_os` |
+| path | ✔︎ | ⚠️ | `path` | `raster_runtime_path` |
+| perf_hooks | ✔︎ | ⚠️ | `perf-hooks` | `raster_runtime_perf_hooks` |
+| process | ✔︎ | ⚠️ | `process` | `raster_runtime_process` |
+| querystring | ✔︎ | ⚠️ | `querystring` | `raster_runtime_querystring` |
+| readline / readline/promises | ✔︎ | ✔︎ | N/A | embedded JS |
+| sqlite | ✔︎ | ⚠️ | `sqlite` | `raster_runtime_sqlite` (Node 24.3 / SQLite 3.50.1) |
+| stream / stream/promises | ✔︎ | ✔︎ | N/A | `raster_runtime_stream` / embedded JS |
+| stream/web | ✔︎ | ⚠️ | `stream-web` | `raster_runtime_stream_web` |
+| string_decoder | ✔︎ | ✔︎ | `string-decoder` | `raster_runtime_string_decoder` |
+| temporal | ✔︎ | ⚠️ | `temporal` | `raster_runtime_temporal` |
+| timers / timers/promises | ✔︎ | ⚠️ | `timers` | `raster_runtime_timers` |
+| tls | ✔︎ | ⚠️ | `tls` | `raster_runtime_tls` |
+| tty | ✔︎ | ⚠️ | `tty` | `raster_runtime_tty` |
+| url | ✔︎ | ⚠️ | `url` | `raster_runtime_url` |
+| util / util/types | ✔︎ | ⚠️ | `util` | `raster_runtime_util` |
+| v8 | ✔︎ | ⚠️ | `v8` | `raster_runtime_v8` |
+| vm | ✔︎ | ⚠️ | `vm` | `raster_runtime_vm` |
+| WebAssembly | ✔︎ | ⚠️ | `webassembly` | `raster_runtime_webassembly` |
+| worker_threads | ✔︎ | ⚠️ | N/A | embedded JS; `Worker` spawning is not implemented |
+| zlib | ✔︎ | ⚠️ | `zlib` | `raster_runtime_zlib` |
+| Other modules | ✔︎ | ✘ | N/A | N/A |
 
 _⚠️ = partially supported_
 

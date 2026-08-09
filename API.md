@@ -291,7 +291,7 @@ Lightweight and fast hash classes for raster_runtime.
 
 [send](https://nodejs.org/api/dgram.html#socketsendmsg-offset-length-port-address-callback)
 
-[unref](hhttps://nodejs.org/api/dgram.html#socketunref)
+[unref](https://nodejs.org/api/dgram.html#socketunref)
 
 ## dns
 
@@ -411,6 +411,13 @@ Lightweight and fast hash classes for raster_runtime.
 ## https
 
 [Agent](https://nodejs.org/api/https.html#class-httpsagent)
+
+## http2
+
+Load-time compatibility surface for packages that probe `node:http2`.
+
+- `constants`, `sensitiveHeaders`, `getDefaultSettings()`, `getPackedSettings()`, and `getUnpackedSettings()` are exported.
+- `connect()`, `createServer()`, and `createSecureServer()` throw because HTTP/2 client and server sessions are not implemented.
 
 ## module
 
@@ -627,6 +634,21 @@ configure QuickJS). Serialization, snapshots, and profilers are not implemented.
 > [!NOTE]
 > `encode` / `decode` follow Node.js and alias `stringify` / `parse`, not `escape` / `unescape`. Empty `sep` or `eq` arguments fall back to `&` and `=` respectively. `escape` throws `URIError` for lone surrogate code units.
 
+## sqlite
+
+Experimental `node:sqlite` implementation targeting the Node.js 24.3 API and backed by SQLite 3.50.1. It is available only through the `node:` scheme, enabled by default, and can be disabled with `--no-experimental-sqlite`.
+
+Exports:
+
+- `DatabaseSync`
+- `StatementSync`
+- `backup()`
+- changeset conflict `constants`
+
+`DatabaseSync` supports in-memory and file databases, `open()`, `close()`, `exec()`, `prepare()`, `location()`, scalar `function()`, `aggregate()`, `createSession()`, `applyChangeset()`, `loadExtension()`, and `enableLoadExtension()`. `StatementSync` supports `run()`, `get()`, `all()`, `iterate()`, `columns()`, named-parameter controls, BigInt reads, and array rows. Session objects expose `changeset()`, `patchset()`, and `close()`, but `Session` is intentionally not a module export.
+
+The Node 24.3 differential fixture covers module shape, statements, functions, aggregates, sessions/changesets, extension loading, backup, errors, and repeated lifecycle/backup stability. See [`compat/node-sqlite/README.md`](compat/node-sqlite/README.md).
+
 ## stream
 
 [Duplex](https://nodejs.org/api/stream.html#class-streamduplex)
@@ -712,6 +734,17 @@ _Also available globally_
 [setImmediate](https://nodejs.org/api/timers.html#timerspromisessetimmediatevalue-options)
 
 > `setInterval` (async iterator) and `scheduler` are not implemented. `{ ref: false }` is accepted for API compatibility but does not change event-loop lifetime.
+
+## tls
+
+Partial `node:tls` support:
+
+- Client: `connect()`, `TLSSocket`, `createSecureContext()`, `checkServerIdentity()`
+- Server: `createServer()` and `Server` (`listen`, `close`, `addContext`, `setSecureContext`)
+- STARTTLS upgrade through `connect({ socket, ... })`
+- TLS 1.2 and TLS 1.3 with the configured `tls-ring`, `tls-aws-lc`, `tls-graviola`, or `tls-openssl` backend
+
+PFX, custom cipher/signature configuration, DH parameters, CRLs, PSK, OCSP, session/ticket resumption, async `SNICallback`, `ALPNCallback`, soft mTLS, and related advanced APIs are not supported. `TLSSocket.write()` currently returns `true` without backpressure or `drain` signaling. See [`modules/raster_runtime_tls/README.md`](modules/raster_runtime_tls/README.md).
 
 ## inspector
 
@@ -812,6 +845,17 @@ Startup probe only — Raster does **not** implement the Node Inspector debuggin
 >
 > Sandbox synchronization copies own enumerable string-keyed properties only. Non-enumerable properties, symbol properties, and full property descriptor forwarding are not supported.
 
+## worker_threads
+
+Partial main-thread compatibility surface:
+
+- `isMainThread`, `parentPort`, `workerData`, and `threadId`
+- `MessageChannel` and `MessagePort` with asynchronous structured-clone delivery
+- `getEnvironmentData()` and `setEnvironmentData()` with clone isolation
+- `markAsUntransferable()`, `isMarkedAsUntransferable()`, and `receiveMessageOnPort()` compatibility stubs
+
+Constructing `Worker` and calling `moveMessagePortToContext()` throw. Raster does not currently spawn JavaScript worker threads, and `MessagePort.ref()` / `unref()` do not control event-loop lifetime.
+
 ## zlib
 
 ### Convenience methods
@@ -867,49 +911,9 @@ export function encode(
 export function decode(value: string): Uint8Array;
 ```
 
-## raster_runtime:timezone
+## Timezone-aware Intl
 
-Lightweight timezone support for raster_runtime. Provides timezone offset calculations and a minimal `Intl.DateTimeFormat` implementation for dayjs and similar library compatibility.
-
-```typescript
-interface Timezone {
-  /**
-   * Get the UTC offset in minutes for a timezone at a given time.
-   * Returns a positive value for timezones ahead of UTC (e.g., 540 for Asia/Tokyo)
-   * and a negative value for timezones behind UTC (e.g., -420 for America/Denver).
-   * Automatically handles DST transitions.
-   */
-  getOffset(timezone: string, epochMs: number): number;
-
-  /**
-   * List all available IANA timezone names.
-   */
-  list(): string[];
-}
-
-declare var Timezone: Timezone;
-
-export { Timezone };
-```
-
-### Example
-
-```javascript
-import { Timezone } from "raster_runtime:timezone";
-
-// Get current offset for Denver (handles DST automatically)
-const offset = Timezone.getOffset("America/Denver", Date.now());
-// Returns -420 (UTC-7) in winter, -360 (UTC-6) in summer
-
-// Check DST transition
-const beforeDst = new Date("2024-03-09T12:00:00Z").getTime();
-const afterDst = new Date("2024-03-11T12:00:00Z").getTime();
-console.log(Timezone.getOffset("America/Denver", beforeDst)); // -420
-console.log(Timezone.getOffset("America/Denver", afterDst)); // -360
-
-// List all available timezones
-const zones = Timezone.list();
-```
+Raster provides timezone support through the global `Intl.DateTimeFormat` and `Date.prototype.toLocaleString` APIs. There is no public `raster_runtime:timezone` module.
 
 ### Intl.DateTimeFormat
 

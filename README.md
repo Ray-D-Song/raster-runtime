@@ -53,7 +53,7 @@ The test runner also has support for filters. Using filters is as simple as addi
 | node:fs                                          | ✔︎       | ✔︎⚠️            |
 | node:fs/promises                                 | ✔︎       | ✔︎⚠️            |
 | node:http                                        | ✔︎       | ✔︎⚠️            |
-| node:http2                                       | ✔︎       | ✘              |
+| node:http2                                       | ✔︎       | ✔︎⚠️            |
 | node:https                                       | ✔︎       | ✔︎⚠️            |
 | node:inspector                                   | ✔︎       | ✔︎⚠️            |
 | node:inspector/promises                          | ✔︎       | ✘              |
@@ -67,7 +67,7 @@ The test runner also has support for filters. Using filters is as simple as addi
 | node:readline                                    | ✔︎       | ✔︎              |
 | node:readline/promises                           | ✔︎       | ✔︎              |
 | node:repl                                        | ✔︎       | ✘              |
-| node:sqlite                                      | ✔︎       | ✘              |
+| node:sqlite                                      | ✔︎       | ✔︎⚠️            |
 | node:stream                                      | ✔︎       | ✔︎\*            |
 | node:stream/promises                             | ✔︎       | ✔︎\*            |
 | node:stream/web                                  | ✔︎       | ✔︎⚠️            |
@@ -83,7 +83,7 @@ The test runner also has support for filters. Using filters is as simple as addi
 | node:v8                                          | ✔︎       | ✔︎⚠️            |
 | node:vm                                          | ✔︎       | ✔︎⚠️            |
 | node:wasi                                        | ✔︎       | ✘              |
-| node:worker_threads                              | ✔︎       | ✘              |
+| node:worker_threads                              | ✔︎       | ✔︎⚠️            |
 | node:zlib                                        | ✔︎       | ✔︎⚠️            |
 
 | [raster_runtime API](https://github.com/ray-d-song/raster_runtime/blob/main/API.md) | Node.js | raster_runtime |
@@ -133,6 +133,9 @@ See [`compat/README.md`](compat/README.md) for exact fixture scope, commands, ex
 _⚠️ = partially supported in RASTER_RUNTIME_<br />
 _⏱ = planned partial support_<br />
 _\* = Not native_<br />
+_`node:http2` is a load-time compatibility surface: settings helpers, constants, and `sensitiveHeaders` are available, while `connect()`, `createServer()`, and `createSecureServer()` throw._<br />
+_`node:sqlite` targets the Node 24.3 API on SQLite 3.50.1 and is enabled by default as an experimental feature; use `--no-experimental-sqlite` to disable it._<br />
+_`node:worker_threads` supports the main-thread identity, `MessageChannel` / `MessagePort`, and environment data; constructing `Worker` still throws._<br />
 _`node:module` provides a CommonJS loader facade (`Module`, `require.resolve`, `require.cache`, `require.extensions`, writable `_resolveFilename` / `_nodeModulePaths`, and `Module._compile` for require-hook compatibility). Extension hooks apply to the CommonJS loader only; they do not change static ESM `import` semantics. **N-API** native addon (`.node`) loading is supported when Raster is built with `--features napi` on a dynamically linked target. V8 C++ ABI addons targeting Node 24 (e.g. `better-sqlite3`) are supported with `--features v8-compat` through a limited QuickJS-backed V8 shim._<br />
 
 ## Using node_modules (dependencies) with raster_runtime
