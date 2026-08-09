@@ -19,25 +19,8 @@ bool is_callback_frame_layout(const raster_v8::shim::ObjectLayout* candidate) {
         return true;
       }
     }
-    return false;
-  };
-  for (auto it = raster_v8::g_callback_handle_stack.rbegin();
-       it != raster_v8::g_callback_handle_stack.rend(); ++it) {
-    if (in_frame(*it)) {
-      return true;
-    }
-  }
-  return in_frame(raster_v8::g_callback_handle_frame);
-}
-
-bool is_live_shim_layout(const raster_v8::shim::ObjectLayout* candidate) {
-  if (candidate == nullptr ||
-      (reinterpret_cast<uintptr_t>(candidate) % alignof(raster_v8::shim::ObjectLayout)) != 0) {
-    return false;
-  }
-  auto in_frame = [&](const raster_v8::CallbackHandleFrame& frame) {
-    for (const auto& layout : frame.layouts) {
-      if (&layout == candidate) {
+    for (const auto* borrowed : frame.borrowed_layouts) {
+      if (borrowed == candidate) {
         return true;
       }
     }
@@ -49,19 +32,7 @@ bool is_live_shim_layout(const raster_v8::shim::ObjectLayout* candidate) {
       return true;
     }
   }
-  if (in_frame(raster_v8::g_callback_handle_frame)) {
-    return true;
-  }
-  if (auto* ctx = raster_v8::bridge_ctx()) {
-    for (const auto& block : raster_v8::ctx_impl(ctx)->arena.blocks) {
-      for (const auto& slot : block) {
-        if (&slot.object == candidate) {
-          return true;
-        }
-      }
-    }
-  }
-  return false;
+  return in_frame(raster_v8::g_callback_handle_frame);
 }
 
 raster_v8::shim::ObjectLayout* layout_for_globalize_address(uintptr_t address) {
@@ -74,7 +45,7 @@ raster_v8::shim::ObjectLayout* layout_for_globalize_address(uintptr_t address) {
   if (address != 0 &&
       (address & 0b11) == static_cast<uintptr_t>(TaggedPointer::Tag::StrongPointer)) {
     auto* candidate = TaggedPointer::fromRaw(address).getPtr<ObjectLayout>();
-    if (is_live_shim_layout(candidate) && candidate->contents.root_id != 0) {
+    if (is_callback_frame_layout(candidate) && candidate->contents.root_id != 0) {
       return candidate;
     }
   }

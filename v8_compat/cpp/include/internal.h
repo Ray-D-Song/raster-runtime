@@ -16,6 +16,7 @@ struct CallbackHandleFrame {
   std::vector<shim::ObjectLayout> layouts;
   std::vector<v8::internal::Address> values;
   std::vector<uint64_t> roots;
+  std::vector<shim::ObjectLayout*> borrowed_layouts;
 };
 
 inline thread_local CallbackHandleFrame g_callback_handle_frame;

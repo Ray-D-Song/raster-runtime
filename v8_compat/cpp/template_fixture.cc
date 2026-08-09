@@ -50,6 +50,10 @@ void objectwrap_ctor_callback(const v8::FunctionCallbackInfo<v8::Value>& info) {
   if (g_ctor_counters == nullptr) {
     return;
   }
+  // Mirror better-sqlite3: a native ctor materializes locals before Wrap, so
+  // g_last_materialized_layout points at an unrelated object by then.
+  v8::Local<v8::Object> decoy = v8::Object::New(info.GetIsolate());
+  (void)decoy;
   auto* wrap = new ShutdownObjectWrap(g_ctor_counters);
   wrap->Attach(info.This());
   info.GetReturnValue().Set(info.This());

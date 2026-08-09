@@ -302,8 +302,8 @@ pub fn root_make_weak(state: &mut crate::bridge::BridgeState, id: u64) -> Raster
         unsafe { qjs::JS_FreeValue(ctx, value) };
         return RasterV8Status::Ok;
     };
-    state.record_weak_root(id, key);
     state.insert_weak_hold(key, value);
+    state.record_weak_root(id, key);
     RasterV8Status::Ok
 }
 

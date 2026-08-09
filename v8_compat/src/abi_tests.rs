@@ -834,6 +834,19 @@ fn objectwrap_wrapped_from_callback_receiver_registers_weak_callback() {
     assert!(matches!(status, crate::bridge::RasterV8Status::Ok));
     assert_ne!(instance_root, 0);
 
+    let mut instance_ptr = std::ptr::null_mut();
+    let ptr_status = unsafe {
+        crate::js_ops::object_ptr_for_root(fixture.context_state, instance_root, &mut instance_ptr)
+    };
+    assert!(matches!(ptr_status, crate::bridge::RasterV8Status::Ok));
+    assert!(!instance_ptr.is_null());
+    assert!(
+        crate::context_tables::with_context_tables(fixture.ctx_ptr, |t| {
+            t.weak_callbacks.contains_key(&(instance_ptr as usize))
+        }),
+        "weak callback must be keyed to the instance, not a stale materialized layout"
+    );
+
     assert_eq!(
         crate::bridge::teardown_counts_for_ctx(fixture.ctx_ptr).weak_callbacks,
         1,

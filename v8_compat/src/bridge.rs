@@ -236,6 +236,7 @@ impl BridgeState {
     }
 
     pub(crate) fn insert_weak_hold(&mut self, key: usize, value: JSValue) {
+        self.forget_weak_roots_for_key(key);
         self.weak_holds.insert(key, value);
     }
 
