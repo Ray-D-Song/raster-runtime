@@ -6,21 +6,28 @@ This project is forked from [LLRT](https://github.com/awslabs/llrt). The differe
 
 It's built in Rust, utilizing QuickJS as the JavaScript engine, ensuring efficient memory usage and swift startup.
 
-## Testing & ensuring compatibility
+## Install
 
-The best way to ensure your code is compatible with raster_runtime is to write tests and execute them using the built-in test runner. The test runner currently supports Jest/Chai assertions. There are three main types of tests you can create:
+```shell
+# Linux
+curl -fsSL https://raw.githubusercontent.com/Ray-D-Song/raster/main/install-linux.sh | sh
 
-Unit Tests
+# macOS
+curl -fsSL https://raw.githubusercontent.com/Ray-D-Song/raster/main/install-macos.sh | sh
+```
 
-- Useful for validating specific modules and functions in isolation
-- Allow focused testing of individual components
+```powershell
+# Windows PowerShell
+irm https://raw.githubusercontent.com/Ray-D-Song/raster/main/install-windows.ps1 | iex
+```
 
-Web Platform Tests (WPT)
+## Quick start
 
-- Useful for validating raster_runtime’s behavior against standardized browser APIs and runtime expectations
-- Ensure compatibility with web standards and cross-runtime environments
-- Help verify alignment with WinterTC and broader JavaScript ecosystem
-- For setup instructions and how to run WPT in raster_runtime, see [here](tests/wpt/README.md).
+```shell
+printf 'console.log("Hello from Raster")\n' > main.mjs
+raster ./main.mjs
+raster --version
+```
 
 ### Test runner
 
@@ -33,7 +40,7 @@ The test runner also has support for filters. Using filters is as simple as addi
 ## Compatibility matrix
 
 > [!NOTE]
-> raster_runtime only support a fraction of the Node.js APIs. It is **NOT** a drop in replacement for Node.js, nor will it ever be. Below is a high level overview of partially supported APIs and modules. For more details consult the [API](API.md) documentation
+> Below is a high level overview of partially supported APIs and modules. For more details consult the [API](API.md) documentation
 
 | [Node.js API](https://nodejs.org/api/index.html) | Node.js | raster_runtime |
 | ------------------------------------------------ | ------- | -------------- |
@@ -123,9 +130,9 @@ The test runner also has support for filters. Using filters is as simple as addi
 
 ### Database driver compatibility
 
-| Package | Tested versions | Local acceptance | CI policy |
-| ------- | --------------- | ---------------- | --------- |
-| `mysql2` | mysql2 3.23.2 / MySQL 8.4 | Node and Raster pass the Promise, callback, transaction, error, and pool fixture | Blocking |
+| Package              | Tested versions              | Local acceptance                                                                                                                      | CI policy                                                                              |
+| -------------------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `mysql2`             | mysql2 3.23.2 / MySQL 8.4    | Node and Raster pass the Promise, callback, transaction, error, and pool fixture                                                      | Blocking                                                                               |
 | `pg` (node-postgres) | pg 8.22.0 / PostgreSQL 16.14 | Node and Raster pass all 25 SCRAM, query, pool, transaction, TLS, cancellation, recovery, notification, shutdown, and `.pgpass` cases | Node baseline and infrastructure are blocking; Raster failures currently emit warnings |
 
 See [`compat/README.md`](compat/README.md) for exact fixture scope, commands, exclusions, and diagnostics.
@@ -177,38 +184,6 @@ export default {
 };
 ```
 
-### Webpack
-
-```javascript
-import TerserPlugin from "terser-webpack-plugin";
-import nodeExternals from "webpack-node-externals";
-
-export default {
-  entry: "./index.js",
-  output: {
-    path: "dist",
-    filename: "bundle.js",
-    libraryTarget: "module",
-  },
-  target: "web",
-  mode: "production",
-  resolve: {
-    extensions: [".js"],
-  },
-  externals: [nodeExternals()],
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          ecma: 2023,
-        },
-      }),
-    ],
-  },
-};
-```
-
 ## Running TypeScript with raster_runtime
 
 Same principle as dependencies applies when using TypeScript. TypeScript must be bundled and transpiled into ES2023 JavaScript.
@@ -231,114 +206,6 @@ B) Without the JIT overhead, raster_runtime conserves both CPU and memory resour
 ## Limitations
 
 There are many cases where raster_runtime shows notable performance drawbacks compared with JIT-powered runtimes, such as large data processing, Monte Carlo simulations or performing tasks with hundreds of thousands or millions of iterations. raster_runtime is most effective when applied to smaller programs such as data transformation, real time processing, authorization, and validation. It is designed to complement existing components rather than serve as a comprehensive replacement for everything. Notably, given its supported APIs are based on Node.js specification, transitioning back to alternative solutions requires minimal code adjustments.
-
-## Building from source
-
-1. Clone code and cd to directory
-
-```
-git clone git@github.com:ray-d-song/raster_runtime.git
-cd raster_runtime
-```
-
-2. Install git submodules
-
-```
-git submodule update --init --checkout
-```
-
-3. Install rust
-
-```
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y
-source "$HOME/.cargo/env"
-```
-
-4. Install dependencies
-
-```
-# MacOS
-brew install zig make cmake zstd node corepack
-
-# Ubuntu
-sudo apt -y install make zstd
-sudo snap install zig --classic --beta
-
-# Windows WSL2 (requires systemd to be enabled*)
-sudo apt -y install cmake g++ gcc make zip zstd
-sudo snap install zig --classic --beta
-
-# Windows WSL2 (If Node.js is not yet installed)
-sudo curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-nvm install --lts
-```
-
-_\* See [Microsoft Devblogs](https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/#how-can-you-get-systemd-on-your-machine)_
-
-5. Install Node.js packages
-
-```
-corepack enable
-yarn
-```
-
-6. Install generate libs and setup rust targets & toolchains
-
-```
-make stdlib && make libs
-```
-
-> [!NOTE]
-> If these commands exit with an error that says `can't cd to zstd/lib`,
-> you've not cloned this repository recursively. Run `git submodule update --init` to download the submodules and run the commands above again.
-
-7. Build binaries for Linux container-style deployment
-
-```
-# for arm64, use
-make raster_runtime-container-arm64
-# or for x86-64, use
-make raster_runtime-container-x64
-```
-
-8. Optionally build for your local machine (Mac or Linux)
-
-```
-make release
-```
-
-You should now have a release binary for your target platform.
-
-## Release binaries
-
-Pushing a version tag that exactly matches the `raster_runtime` Cargo package publishes a GitHub Release. For example:
-
-```shell
-git push origin v0.1.0
-```
-
-If a release workflow needs to be retried after a failed tag push, run the
-`Release` workflow manually from the default branch with `tag=v0.1.0`. It
-checks out that existing tag and never moves or recreates it.
-
-Each release provides uncompressed native executables named
-`raster_runtime-{linux|macos|windows}-{x64|arm64}` (`.exe` on Windows), plus
-`SHA256SUMS`. Verify a downloaded file before running it:
-
-```shell
-# Linux
-sha256sum -c SHA256SUMS
-
-# macOS
-shasum -a 256 -c SHA256SUMS
-```
-
-On Linux and macOS, make a downloaded executable runnable first:
-
-```shell
-chmod +x raster_runtime-linux-x64
-./raster_runtime-linux-x64 --version
-```
 
 ## Crypto and TLS Backend Options
 
