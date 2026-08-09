@@ -54,8 +54,11 @@ void objectwrap_ctor_callback(const v8::FunctionCallbackInfo<v8::Value>& info) {
   // g_last_materialized_layout points at an unrelated object by then.
   v8::Local<v8::Object> decoy = v8::Object::New(info.GetIsolate());
   (void)decoy;
+  // Local<T>::New(info.This()) copies the frame layout into the arena; the copy
+  // must stay marked borrowed so globalizing it dups the receiver root.
+  v8::Local<v8::Object> copied = v8::Local<v8::Object>::New(info.GetIsolate(), info.This());
   auto* wrap = new ShutdownObjectWrap(g_ctor_counters);
-  wrap->Attach(info.This());
+  wrap->Attach(copied);
   info.GetReturnValue().Set(info.This());
 }
 

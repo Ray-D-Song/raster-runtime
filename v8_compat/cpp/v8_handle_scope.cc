@@ -58,7 +58,15 @@ internal::Address* HandleScope::CreateHandle(internal::Isolate* i_isolate,
   if (!ctx) {
     return nullptr;
   }
-  auto* src = reinterpret_cast<raster_v8::shim::ObjectLayout*>(value);
+  const uintptr_t raw = static_cast<uintptr_t>(value);
+  // Local<T>::New and ReturnValue::Get hand us the tagged first word, not the layout.
+  auto* src =
+      (raw & 0b11) == static_cast<uintptr_t>(raster_v8::shim::TaggedPointer::Tag::StrongPointer)
+          ? raster_v8::shim::TaggedPointer::fromRaw(raw).getPtr<raster_v8::shim::ObjectLayout>()
+          : reinterpret_cast<raster_v8::shim::ObjectLayout*>(raw);
+  if (src == nullptr) {
+    return nullptr;
+  }
   auto* slot = raster_v8::alloc_handle_slot(ctx);
   slot->object = *src;
   slot->object.tagged_map = raster_v8::shim::TaggedPointer(&slot->object);
